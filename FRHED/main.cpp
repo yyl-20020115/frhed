@@ -33,8 +33,8 @@ Last change: 2013-02-24 by Jochen Neubeck
 #include "toolbar.h"
 #include <process.h>
 #include <VersionHelpers.h>
-static const char szMainClass[] = "frhed wndclass";
-static const char szHexClass[] = "heksedit";
+static const TCHAR szMainClass[] = _T("frhed wndclass");
+static const TCHAR szHexClass[] = _T("heksedit");
 
 HINSTANCE hMainInstance;
 
@@ -42,18 +42,21 @@ LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 
 static BOOL NTAPI IsNT()
 {
+#if 0
 	OSVERSIONINFO osvi;
 	SecureZeroMemory(&osvi, sizeof osvi);
 	osvi.dwOSVersionInfoSize = sizeof osvi;
 	if (!GetVersionEx(&osvi))
 		osvi.dwPlatformId = 0;
-	
 	return osvi.dwPlatformId == VER_PLATFORM_WIN32_NT;
+#else
+	return IsWindowsXPOrGreater();
+#endif
 }
 
 static BOOL CALLBACK WndEnumProcCountInstances(HWND hwnd, LPARAM lParam)
 {
-	TCHAR buf[64];
+	TCHAR buf[64] = { 0 };
 	if (GetClassName(hwnd, buf, RTL_NUMBER_OF(buf)))
 		if (StrCmp(buf, szMainClass) == 0)
 			++*(int *)lParam;
@@ -65,13 +68,12 @@ static HWND hwndHex = 0;
 static HWND hwndToolBar = 0;
 static HWND hwndStatusBar = 0;
 static HexEditorWindow *pHexWnd = 0;
-static BOOL bIsNT = FALSE;
+//static BOOL bIsNT = FALSE;
 
 /**
  * @brief The application starting point.
  */
-
-int WINAPI wWinMain(HINSTANCE hIconInstance, HINSTANCE, LPWSTR szCmdLine, int)
+int WINAPI wWinMain(_In_ HINSTANCE hIconInstance, _In_opt_ HINSTANCE, _In_ LPWSTR szCmdLine, _In_ int)
 {
 	int iSelStart = 0;
 	int iSelLength = 0;
@@ -141,10 +143,10 @@ int WINAPI wWinMain(HINSTANCE hIconInstance, HINSTANCE, LPWSTR szCmdLine, int)
 			iSelEnd = iSelStart + iSelLength - 1;
 	}
 
-	OleInitialize(NULL);
+	HRESULT hr = OleInitialize(NULL);
 	InitCommonControls();
 
-	bIsNT = IsNT();
+	//bIsNT = IsNT();
 
 	// Load the heksedit component.
 	//LPCTSTR pe_heksedit = bIsNT ? _T("hekseditU.dll") : _T("heksedit.dll");
@@ -152,16 +154,18 @@ int WINAPI wWinMain(HINSTANCE hIconInstance, HINSTANCE, LPWSTR szCmdLine, int)
 	hMainInstance = LoadLibrary(pe_heksedit);
 	if (hMainInstance == NULL)
 	{
-		TCHAR complain[100];
-		wsprintf(complain, _T("Unable to load the %s"), pe_heksedit);
+		TCHAR complain[256] = { 0 };
+		//wsprintf(complain, _T("Unable to load the %s"), pe_heksedit);
+		_sntprintf_s(complain, ARRAYSIZE(complain),
+			ARRAYSIZE(complain), _T("Unable to load the %s"), pe_heksedit);
 		MessageBox(NULL, complain, NULL, MB_ICONSTOP);
 		return 3;
 	}
 	// Register window class and open window.
 
-	MSG msg;
+	MSG msg = { 0 };
 
-	WNDCLASS wndclass;
+	WNDCLASS wndclass = { 0 };
 	SecureZeroMemory(&wndclass, sizeof wndclass);
 
 	//Register the main window class
@@ -193,7 +197,7 @@ int WINAPI wWinMain(HINSTANCE hIconInstance, HINSTANCE, LPWSTR szCmdLine, int)
 	if (pHexWnd->iWindowX != CW_USEDEFAULT)
 	{
 		// Prevent window creep when Taskbar is at top or left of screen
-		WINDOWPLACEMENT wp;
+		WINDOWPLACEMENT wp = { 0 };
 		wp.length = sizeof wp;
 		GetWindowPlacement(hwndMain, &wp);
 		wp.showCmd = pHexWnd->iWindowShowCmd;
