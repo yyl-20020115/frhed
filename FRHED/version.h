@@ -1,7 +1,6 @@
 /*
 Frhed - Free hex editor
 Copyright (C) 2000 Raihan Kibria
-SPDX-License-Identifier: GPL-3.0-or-later
 Last change: Jochen Neubeck
 */
 /**
@@ -10,5 +9,4 @@ Last change: Jochen Neubeck
  * @brief Version number (macros) for Frhed.
  *
  */
- 
 #include "../gen-versioninfo.h"

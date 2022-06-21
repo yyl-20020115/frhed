@@ -212,7 +212,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hIconInstance, _In_opt_ HINSTANCE, _In_ LPWST
 
 	if (*szCmdLine != '\0')
 	{
-		pHexWnd->open_file(szCmdLine);
+		pHexWnd->open_file(szCmdLine,TRUE);
 		if (iSelEnd != 0)
 			pHexWnd->CMD_setselection(iSelStart, iSelEnd);
 	}

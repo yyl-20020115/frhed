@@ -272,8 +272,8 @@ public:
 	void push_undorecord(unsigned offset, unsigned length, UndoRecord::Data *data);
 	void apply_undorecord(UndoRecord *);
 
-	int load_file(LPCTSTR);
-	virtual int STDMETHODCALLTYPE open_file(LPCWSTR);
+	int load_file(LPCTSTR fname,BOOL createIfNotFound = FALSE);
+	virtual int STDMETHODCALLTYPE open_file(LPCWSTR fname, BOOL createIfNotFound = FALSE);
 	int file_is_loadable(LPCTSTR fname);
 	int at_window_create(HWND, HINSTANCE);
 	void set_control_bar(HWindow *);
@@ -360,6 +360,7 @@ protected:
 	void statusbar_chset_and_editmode();
 
 	FindCtxt *m_pFindCtxt;
+	bool m_fileIsAutoCreated;
 };
 
 void reverse_bytes(BYTE *, BYTE *);

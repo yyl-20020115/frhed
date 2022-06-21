@@ -153,6 +153,18 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='UnicodeRelease|x64'">false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnicodeDebug|Win32'">
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnicodeRelease|Win32'">
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
@@ -177,7 +189,9 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Command>
+      <Command>
+      </Command>
+      <Message>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -228,7 +242,9 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Command>
+      <Command>
+      </Command>
+      <Message>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -279,7 +295,9 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Command>
+      <Command>
+      </Command>
+      <Message>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnicodeDebug|x64'">
@@ -331,7 +349,9 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Command>
+      <Command>
+      </Command>
+      <Message>editbin.exe /OSVERSION:4.0 /SUBSYSTEM:WINDOWS,4.0 "$(TargetPath)"</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='UnicodeRelease|x64'">

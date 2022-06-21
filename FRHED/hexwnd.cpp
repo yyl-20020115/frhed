@@ -79,7 +79,31 @@ OPTYP iMoveOpTyp;
  * @brief Constructor.
  */
 HexEditorWindow::HexEditorWindow()
+	:bMouseOpDelayTimerSet()
+	,bScrollTimerSet()
+	,bytenum()
+	,column()
+	,cxBuffer()
+	,cxCaps()
+	,cxChar()
+	,cxClient()
+	,cyBuffer()
+	,cyChar()
+	,cyClient()
+	,hInstance()
+	,iInstCount()
+	,iLBDownX()
+	,iLBDownY()
+	,iMouseX()
+	,iMouseY()
+	,iNumlines()
+	,iPartialFileLen()
+	,iPartialOpenLen()
+	,lbd_pos()
+	,line()
+	,new_pos()
 {
+	m_fileIsAutoCreated = false;
 	Drive = 0;
 	SelectedPartitionInfo = 0;
 	CurrentSectorNumber = 0;
@@ -354,15 +378,24 @@ HMENU HexEditorWindow::load_menu(UINT id)
 	return langArray.LoadMenu(hMainInstance, MAKEINTRESOURCE(id));
 }
 
+
 /**
  * @brief Load a file.
  * @param [in] fname Name of file to load.
  * @return TRUE if the file was loaded succesfully, FALSE otherwise.
  */
-int HexEditorWindow::load_file(LPCTSTR fname)
+int HexEditorWindow::load_file(LPCTSTR fname,BOOL createIfNotFound)
 {
 	WaitCursor wc;
 	int bLoaded = FALSE;
+	if (!PathFileExists(fname) && createIfNotFound) {
+		CMD_new();
+		_tcsncpy_s(this->filename, fname, _tcslen(fname));
+		this->m_fileIsAutoCreated = true;
+		bLoaded = TRUE;
+		goto OnLoaded;
+	}
+	
 	int filehandle = _topen(fname, _O_RDONLY|_O_BINARY);
 	if (filehandle != -1)
 	{
@@ -393,10 +426,13 @@ int HexEditorWindow::load_file(LPCTSTR fname)
 	}
 	else
 	{
-		TCHAR buf[500];
+
+		TCHAR buf[512] = { 0 };
 		_stprintf(buf, GetLangString(IDS_ERR_FILE_OPEN_CODE), errno, fname);
 		MessageBox(pwnd, buf, MB_ICONERROR);
+
 	}
+OnLoaded:
 	if (bLoaded)
 	{
 		bFileNeverSaved = false;
@@ -422,7 +458,7 @@ int HexEditorWindow::load_file(LPCTSTR fname)
  * @brief Open a file specified on the command line.
  * @note Function takes a wide string even in ANSI build.
  */
-int HexEditorWindow::open_file(LPCWSTR wszCmdLine)
+int HexEditorWindow::open_file(LPCWSTR wszCmdLine,BOOL createIfNotFound)
 {
 	W2T szCmdLine = wszCmdLine;
 	int bLoaded = FALSE;
@@ -436,10 +472,10 @@ int HexEditorWindow::open_file(LPCWSTR wszCmdLine)
 		switch (ret)
 		{
 		case IDYES:
-			bLoaded = load_file(lpszPath);
+			bLoaded = load_file(lpszPath, createIfNotFound);
 			break;
 		case IDNO:
-			bLoaded = load_file(szCmdLine);
+			bLoaded = load_file(szCmdLine, createIfNotFound);
 			break;
 		case IDCANCEL:
 			break;
@@ -447,7 +483,7 @@ int HexEditorWindow::open_file(LPCWSTR wszCmdLine)
 	}
 	else
 	{
-		bLoaded = load_file(szCmdLine);
+		bLoaded = load_file(szCmdLine, createIfNotFound);
 	}
 	return bLoaded;
 }
