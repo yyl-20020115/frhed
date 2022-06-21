@@ -681,7 +681,7 @@ msgstr "Frhed - Vrije hex editor"
 
 #: heksedit.rc:336
 #, c-format
-msgid "© Raihan Kibria 2000"
+msgid "?Raihan Kibria 2000"
 msgstr ""
 
 #: heksedit.rc:337

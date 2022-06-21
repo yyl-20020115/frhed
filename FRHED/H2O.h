@@ -754,7 +754,7 @@ namespace H2O
 			HINSTANCE hinst = NULL, void *param = NULL)
 		{
 			HWND hWnd = ::CreateWindowExA(exStyle, className, windowName, style,
-				x, y, cx, cy, parent->m_hWnd, reinterpret_cast<HMENU>(id), hinst, param);
+				x, y, cx, cy, parent->m_hWnd, reinterpret_cast<HMENU>((LONG_PTR)id), hinst, param);
 			return reinterpret_cast<HWindow *>(hWnd);
 		}
 		static HWindow *CreateEx(DWORD exStyle,
@@ -763,7 +763,7 @@ namespace H2O
 			HINSTANCE hinst = NULL, void *param = NULL)
 		{
 			HWND hWnd = ::CreateWindowExW(exStyle, className, windowName, style,
-				x, y, cx, cy, parent->m_hWnd, reinterpret_cast<HMENU>(id), hinst, param);
+				x, y, cx, cy, parent->m_hWnd, reinterpret_cast<HMENU>((LONG_PTR)id), hinst, param);
 			return reinterpret_cast<HWindow *>(hWnd);
 		}
 		static HWindow *GetConsoleWindow()
@@ -4402,7 +4402,7 @@ namespace H2O
 		}
 		ToolBarButton(TBBUTTON *&id)
 		{
-			idCommand = reinterpret_cast<int>(id);
+			idCommand = id->idCommand;
 			id = this;
 		}
 		ToolBarButton(ToolBarButton *p)

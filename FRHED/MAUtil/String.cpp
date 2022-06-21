@@ -265,8 +265,8 @@ namespace MAUtil {
 
 	template<class Tchar> void BasicString<Tchar>::remove(int position, int number) {
 		if(sd->getRefCount() > 1) {
-			ASSERT_MSG(position >= 0 && position < this->length(), "invalid position");
-			ASSERT_MSG(number > 0 && (position + number) <= this->length(), "invalid number");
+			//ASSERT_MSG(position >= 0 && position < this->length(), "invalid position");
+			//ASSERT_MSG(number > 0 && (position + number) <= this->length(), "invalid number");
 			int newLen = size() - number;
 			StringData<Tchar>* temp = new StringData<Tchar>(newLen);
 			if(position > 0) {
@@ -287,10 +287,10 @@ namespace MAUtil {
 
 	template<class Tchar>
 	BasicString<Tchar> BasicString<Tchar>::substr(int startIndex, int len) const {
-		ASSERT_MSG(startIndex >= 0 && startIndex <= this->length(), "invalid index");
+		//ASSERT_MSG(startIndex >= 0 && startIndex <= this->length(), "invalid index");
 		if(len == npos)
 			len = length() - startIndex;
-		ASSERT_MSG(len >= 0 && startIndex + len <= length(), "invalid length");
+		//ASSERT_MSG(len >= 0 && startIndex + len <= length(), "invalid length");
 
 		return BasicString(c_str() + startIndex, len);
 	}

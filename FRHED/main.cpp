@@ -32,7 +32,7 @@ Last change: 2013-02-24 by Jochen Neubeck
 #include "hexwnd.h"
 #include "toolbar.h"
 #include <process.h>
-
+#include <VersionHelpers.h>
 static const char szMainClass[] = "frhed wndclass";
 static const char szHexClass[] = "heksedit";
 
@@ -47,6 +47,7 @@ static BOOL NTAPI IsNT()
 	osvi.dwOSVersionInfoSize = sizeof osvi;
 	if (!GetVersionEx(&osvi))
 		osvi.dwPlatformId = 0;
+	
 	return osvi.dwPlatformId == VER_PLATFORM_WIN32_NT;
 }
 
@@ -146,7 +147,8 @@ int WINAPI wWinMain(HINSTANCE hIconInstance, HINSTANCE, LPWSTR szCmdLine, int)
 	bIsNT = IsNT();
 
 	// Load the heksedit component.
-	LPCTSTR pe_heksedit = bIsNT ? _T("hekseditU.dll") : _T("heksedit.dll");
+	//LPCTSTR pe_heksedit = bIsNT ? _T("hekseditU.dll") : _T("heksedit.dll");
+	LPCTSTR pe_heksedit = _T("heksedit.dll");
 	hMainInstance = LoadLibrary(pe_heksedit);
 	if (hMainInstance == NULL)
 	{

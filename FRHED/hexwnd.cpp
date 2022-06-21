@@ -39,7 +39,9 @@ Last change: 2020-09-02 by Jochen Neubeck
 #include "idt.h"
 #include "ids.h"
 #include "ido.h"
-
+#ifndef FRHED_VERSION_3
+#define FRHED_VERSION_3 3
+#endif
 const TCHAR DefaultHexdumpFile[] = _T("hexdump.txt");
 const int DefaultOffsetLength = 6;
 const int DefaultBPL = 16;
@@ -3077,7 +3079,7 @@ int HexEditorWindow::CMD_copy_hexdump(int iCopyHexdumpMode, int iCopyHexdumpType
 		for (int k = 0, a = iCopyHexdumpDlgStart; a <= iCopyHexdumpDlgEnd; a += iBytesPerLine, k += iCharsPerLine + 2)
 		{
 			// Write offset.
-			int m = sprintf(buf2, "%*.*x", iMinOffsetLen, iMinOffsetLen, bPartialStats ? a + iPartialOffset : a);
+			int m = sprintf(buf2, "%*.*llx", iMinOffsetLen, iMinOffsetLen, bPartialStats ? a + iPartialOffset : a);
 
 			memset(buf2 + m, ' ', iMaxOffsetLen + iByteSpace - m);
 			buf2[iMaxOffsetLen + iByteSpace] = '\0';
@@ -4670,7 +4672,7 @@ void HexEditorWindow::CMD_OpenDrive()
 		TCHAR params[32];
 		wsprintf(params, _T("/i%d /c%d"), iInstCount, ID_DISK_OPEN_DRIVE);
 		HINSTANCE hi = ShellExecute(NULL, _T("runas"), path, params, NULL, SW_SHOWNORMAL);
-		if ((int) hi > HINSTANCE_ERROR)
+		if ((LONG_PTR) hi > HINSTANCE_ERROR)
 		{
 			reset();
 			PostMessage(hwndMain, WM_CLOSE, 0, 0);
@@ -4841,7 +4843,7 @@ void HexEditorWindow::CMD_summon_text_edit()
 	if (!close())
 		return;
 	HINSTANCE hi = ShellExecute(pwnd->m_hWnd, _T("open"), TexteditorName, filename, NULL, SW_SHOWNORMAL);
-	if ((int) hi <= HINSTANCE_ERROR)
+	if ((LONG_PTR) hi <= HINSTANCE_ERROR)
 	{
 		MessageBox(pwnd, GetLangString(IDS_ERR_EXT_EDITOR), MB_ICONERROR);
 	}
@@ -6155,8 +6157,8 @@ HGLOBAL HexEditorWindow::RTF_hexdump(int start, int end, SIZE_T *plen)
 		"}\n" // \colortbl
 
 		//This is new for RTF 1.7, but it should be ignored by older readers so who cares (older than M$ Word XP = Word 2002??)
-		"{\\*\\generator frhed v"_CRT_STRINGIZE(FRHED_VERSION_3)";}\n"
-
+		"{\\*\\generator frhed v3;}\n"
+		//"_CRT_STRINGIZE(FRHED_VERSION_3)"
 		//Metadata here too?
 		"{\\info\n"
 			//Put the filename in the title

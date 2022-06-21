@@ -47,7 +47,7 @@ msgstr "&Neu\tStrg+N"
 #: heksedit.rc:15
 #, c-format
 msgid "&Open...\tCtrl+O"
-msgstr "Ö&ffnen...\tStrg+O"
+msgstr "?ffnen...\tStrg+O"
 
 #: heksedit.rc:16
 #, c-format
@@ -112,7 +112,7 @@ msgstr "&Laufwerk"
 #: heksedit.rc:44
 #, c-format
 msgid "&Open drive..."
-msgstr "Laufwerk ö&ffnen..."
+msgstr "Laufwerk ?ffnen..."
 
 #: heksedit.rc:45
 #, c-format
@@ -678,7 +678,7 @@ msgstr ""
 
 #: heksedit.rc:336
 #, c-format
-msgid "© Raihan Kibria 2000"
+msgid "?Raihan Kibria 2000"
 msgstr ""
 
 #: heksedit.rc:337
@@ -1232,7 +1232,7 @@ msgstr "Rückwärts suchen"
 #: heksedit.rc:697
 #, c-format
 msgid "Match case"
-msgstr "Groß-/Kleinschreibung beachten"
+msgstr "Gro?/Kleinschreibung beachten"
 
 #: heksedit.rc:699
 #, c-format

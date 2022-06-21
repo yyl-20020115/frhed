@@ -40,7 +40,7 @@ CDropTarget::~CDropTarget()
 #ifdef _DEBUG
 	printf("IDropTarget::~IDropTarget\n");
 	if (m_cRefCount != 0)
-		printf("Deleting %s too early 0x%x.m_cRefCount = %d\n", "IDropTarget", this, m_cRefCount);
+		printf("Deleting %s too early 0x%p.m_cRefCount = %d\n", "IDropTarget", this, m_cRefCount);
 #endif //_DEBUG
 	hexwnd.target = NULL;
 }
@@ -500,7 +500,7 @@ STDMETHODIMP CDropTarget::Drop(IDataObject* pDataObject, DWORD grfKeyState, POIN
 							len = GetObject(stm.hBitmap, 0, NULL);
 							if (len)
 							{
-								DIBSECTION t;
+								DIBSECTION t = { 0 };
 								GetObject(stm.hBitmap, len, &t);
 								len += t.dsBm.bmHeight*t.dsBm.bmWidthBytes*t.dsBm.bmPlanes;
 							}
